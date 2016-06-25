@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">MaryQuiz</string>
+
+    <string name="true_button">True</string>
+    <string name="false_button">False</string>
+    <string name="correct_toast">Correct!</string>
+    <string name="incorrect_toast">Bruh...no...</string>
+    <string name="question_one">I have never broken a bone before</string>
+    <string name="question_two">I have gone to 6 different schools.</string>
+    <string name="question_five">I am in love with you.</string>
+    <string name="question_four">I like ketchup on my fries.</string>
+    <string name="question_three">I have 6 cousins.</string>
+    <string name="question_six">My favorite candy is Sour Patch Kids.</string>
+</resources>
