@@ -3,6 +3,10 @@
 
     <string name="true_button">True</string>
     <string name="false_button">False</string>
+    <string name="restart_button">Restart</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Yes</string>
+    <string name="confirm_message">Are you sure you want to restart the quiz?</string>
     <string name="correct_toast">Correct!</string>
     <string name="incorrect_toast">Bruh...no...</string>
     <string name="question_one">I have never broken a bone before</string>
@@ -11,4 +15,12 @@
     <string name="question_four">I like ketchup on my fries.</string>
     <string name="question_three">I have 6 cousins.</string>
     <string name="question_six">My favorite candy is Sour Patch Kids.</string>
+    <string name="question_seven">I have never been to Canada.</string>
+    <string name="question_eight">My first pet was a fish.</string>
+    <string name="question_nine">Clam Chowder is my favorite flavor soup.</string>
+    <string name="question_ten">The tallest cactus in the world is around 30 ft. tall</string>
+    <string name="warning_text"> Are you sure you want to do this?</string>
+    <string name="show_answer_button">Show Answer</string>
+    <string name="cheat_button">Cheat!</string>
+    <string name="judgment_toast">Cheating is wrong bruh..</string>
 </resources>
