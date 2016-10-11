@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    tools:ignore="ExtraText">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name:"
+        android:paddingLeft="10dp"
+        android:textSize="16dp"
+        android:paddingBottom="2dp" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="0dp"
+        android:id="@+id/cigarName"
+        android:hint=" Enter Name"
+        android:focusable="true"
+        android:textColorHighlight="#fb00ff"
+        android:textColorHint="#2945a3" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Type:"
+        android:paddingLeft="10dp"
+        android:textSize="16dp"
+        android:paddingBottom="2dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cigarType"
+        android:hint=" Enter Type"
+        android:paddingTop="0dp"
+        android:focusable="true"
+        android:textColorHighlight="#fb00ff"
+        android:textColorHint="#2945a3" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/length"
+            android:hint=" Length"
+            android:focusable="true"
+            android:layout_marginLeft="20dp"
+            android:textColorHighlight="#fb00ff"
+            android:textColorHint="#2945a3"
+            android:inputType="number"
+            android:background="@android:drawable/editbox_background_normal" />
+        <EditText
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/gauge"
+            android:hint=" Gauge"
+            android:focusable="true"
+            android:inputType="number"
+            android:textColorHighlight="#fb00ff"
+            android:textColorHint="#2945a3"
+            android:background="@android:drawable/editbox_background_normal" />
+        <EditText
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/amount"
+            android:hint=" Amount"
+            android:inputType="number"
+            android:focusable="true"
+            android:textColorHighlight="#fb00ff"
+            android:textColorHint="#2945a3"
+            android:background="@android:drawable/editbox_background_normal" />
+        </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price:"
+        android:paddingLeft="10dp"
+        android:textSize="16dp"
+        android:paddingBottom="2dp" />
+    <EditText
+        android:layout_width="120dp"
+        android:paddingBottom="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/price"
+        android:hint=" $"
+        android:inputType="numberDecimal"
+        android:focusable="true"
+        android:textColorHighlight="#fb00ff"
+        android:textColorHint="#2945a3" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rating:"
+        android:paddingLeft="10dp"
+        android:textSize="16dp"
+        android:paddingBottom="2dp" />
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/type"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:id="@+id/ratingBarSetter"
+        android:paddingTop="5dp"
+        android:numStars="5"
+        android:stepSize="1.0" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bought from:"
+        android:paddingLeft="10dp"
+        android:textSize="16dp"
+        android:paddingBottom="2dp" />
+    <EditText
+        android:layout_width="match_parent"
+        android:paddingBottom="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/location"
+        android:hint=" Location"
+        android:focusable="true"
+        android:textColorHighlight="#fb00ff"
+        android:textColorHint="#2945a3" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Naotes:"
+        android:paddingLeft="10dp"
+        android:textSize="16dp"
+        android:paddingBottom="2dp" />
+    <EditText
+        android:layout_width="match_parent"
+        android:paddingBottom="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/notes"
+        android:hint=" Great smoke. Would definitely buy again!"
+        android:focusable="true"
+        android:textColorHighlight="#fb00ff"
+        android:textColorHint="#2945a3" />
+    <TextView
+        android:layout_width="match_parent"
+        android:paddingBottom="20dp"
+        android:layout_height="wrap_content"
+        android:textColorHighlight="#fb00ff"
+        android:textColorHint="#2945a3" />
+
+    <android.support.design.widget.FloatingActionButton
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/fab2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:clickable="true"
+        android:src="@drawable/ic_collapse"
+        android:layout_margin="20dp"
+        app:elevation="6dp" />
+
+
+
+</LinearLayout>
