@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainScrollView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="1"
-    tools:ignore="ExtraText">
+    android:layout_height="match_parent">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -84,7 +85,6 @@
         android:paddingBottom="2dp" />
     <EditText
         android:layout_width="120dp"
-        android:paddingBottom="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/price"
         android:hint=" $"
@@ -117,7 +117,6 @@
         android:paddingBottom="2dp" />
     <EditText
         android:layout_width="match_parent"
-        android:paddingBottom="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/location"
         android:hint=" Location"
@@ -127,7 +126,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Naotes:"
+        android:text="Notes:"
         android:paddingLeft="10dp"
         android:textSize="16dp"
         android:paddingBottom="2dp" />
@@ -138,26 +137,33 @@
         android:id="@+id/notes"
         android:hint=" Great smoke. Would definitely buy again!"
         android:focusable="true"
+        android:inputType="textMultiLine"
         android:textColorHighlight="#fb00ff"
-        android:textColorHint="#2945a3" />
-    <TextView
+        android:textColorHint="#2945a3"
+        android:layout_marginBottom="10dp"/>
+    <ImageView
+        app:srcCompat="@drawable/cigar_photo"
+        android:id="@+id/thumbnail"
         android:layout_width="match_parent"
-        android:paddingBottom="20dp"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"/>
+    <Button
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHighlight="#fb00ff"
-        android:textColorHint="#2945a3" />
+        android:text="Add Photo"
+        android:id="@+id/addPhotoButton"/>
 
-    <android.support.design.widget.FloatingActionButton
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/fab2"
-        android:layout_width="wrap_content"
+    <Button
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:clickable="true"
-        android:src="@drawable/ic_collapse"
-        android:layout_margin="20dp"
-        app:elevation="6dp" />
-
+        android:text="Save Cigar"
+        android:id="@+id/saveButton"
+        android:backgroundTint="@color/accent"
+        style="@style/Base.TextAppearance.AppCompat.Button"
+        android:elevation="@dimen/place_autocomplete_button_padding"
+        android:textColor="@color/cast_expanded_controller_progress_text_color"
+        android:textStyle="normal|bold" />
 
 
 </LinearLayout>
+</ScrollView>

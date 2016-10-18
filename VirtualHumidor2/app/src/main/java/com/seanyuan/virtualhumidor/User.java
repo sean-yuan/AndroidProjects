@@ -18,11 +18,11 @@ public class User {
         this.email = email;
     }
 
-    public List<FeedItem> getHumidor() {
+    public List<String> getHumidor() {
         return humidor;
     }
 
-    public void setHumidor(List<FeedItem> humidor) {
+    public void setHumidor(List<String> humidor) {
         this.humidor = humidor;
     }
 
@@ -35,13 +35,13 @@ public class User {
     }
 
     public String email;
-    public List<FeedItem> humidor;
+    public List<String> humidor;
 
     public User() {
 
     }
 
-    public User(String userName, String email, List<FeedItem> humidor) {
+    public User(String userName, String email, List<String> humidor) {
         this.userName = userName;
         this.email = email;
         this.humidor = humidor;

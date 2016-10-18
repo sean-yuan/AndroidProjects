@@ -105,15 +105,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void writeNewUser(String userId, String userName, String email) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        List<FeedItem> listy = new ArrayList<>();
-            FeedItem item = new FeedItem();
-            item.setTitle("Add your first cigar!");
-            item.setThumbnail(R.drawable.common_google_signin_btn_icon_dark);
-            item.setType("Mild");
-            item.setPrice("$9.00");
-            item.setQuantity("Qty: 0");
-            item.setRatingValue("3");
-            listy.add(item);
+        List<String> listy = new ArrayList<>();
         User database_user = new User(userName, email, listy);
         mDatabase.child("users").child(userId).setValue(database_user);
     }

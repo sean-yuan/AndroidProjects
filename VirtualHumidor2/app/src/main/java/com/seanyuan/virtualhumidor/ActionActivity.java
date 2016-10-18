@@ -44,10 +44,11 @@ import java.util.List;
  */
 
 public class ActionActivity extends AppCompatActivity {
-    private DatabaseReference mDatabase;
+    private static DatabaseReference mDatabase;
     private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
-    static List<FeedItem> hi;
+    private static FirebaseUser mFirebaseUser;
+    static List<String> cigarList;
+    static List<FeedItem> cigarActualList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,20 +57,21 @@ public class ActionActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        mDatabase = mDatabase.child("users/"+mFirebaseUser.getUid()+"/humidor/");
-        hi = new ArrayList<>();
-        initDataListener(mDatabase);
+        cigarList = new ArrayList<>();
+        cigarActualList = new ArrayList<>();
+        initDataListener();
+        initActionBar();
     }
 
-    private void initDataListener(DatabaseReference database){
-        mDatabase.addValueEventListener(new ValueEventListener() {
+    private void initDataListener(){
+        DatabaseReference database = mDatabase.child("users/"+mFirebaseUser.getUid()+"/humidor/");
+        database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 System.out.println("There are " + snapshot.getChildrenCount() + " cigars in humidor");
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    FeedItem item = postSnapshot.getValue(FeedItem.class);
-                    hi.add(item);
-                    initActionBar();
+                    String houseID = postSnapshot.getValue(String.class);
+                    cigarList.add(houseID);
                 }
             }
             @Override
@@ -173,7 +175,8 @@ public class ActionActivity extends AppCompatActivity {
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(layoutManager);
-            MyRecyclerAdapter adapter = new MyRecyclerAdapter(getActivity(), hi);
+            getItemsHumidor();
+            MyRecyclerAdapter adapter = new MyRecyclerAdapter(getActivity(), cigarActualList);
             recyclerView.setAdapter(adapter);
             FloatingActionButton fab = (FloatingActionButton) root.findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener() {
@@ -186,6 +189,25 @@ public class ActionActivity extends AppCompatActivity {
 
             return root;
         }
+    }
+
+    private static void getItemsHumidor(){
+        mDatabase.child("cigars-all");
+        mDatabase.orderByChild("ownerID").equalTo(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Log.d("User key", child.getKey());
+                    Log.d("User ref", child.getRef().toString());
+                    Log.d("User val", child.getValue().toString());
+                    cigarActualList.add((FeedItem)child.getValue());
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
     //TODO: add back button action - should not be able to return to register screen
