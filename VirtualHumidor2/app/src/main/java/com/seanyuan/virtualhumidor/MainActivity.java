@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,6 +19,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by seanyuan on 9/30/16.
@@ -29,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private ProgressDialog progressDiag;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    public static List<FeedItem> cigarActualList;
+    private static final String KEY_INDEX = "index";
+    private static DatabaseReference mDatabase;
+    private static FirebaseUser mFirebaseUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +53,9 @@ public class MainActivity extends AppCompatActivity {
         loginButton=(Button)findViewById(R.id.loginButton);
         registerButton=(Button)findViewById(R.id.registerButton);
         forgotButton = (Button) findViewById(R.id.forgotButton);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -69,6 +86,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+        if(savedInstanceState == null){
+            System.out.println("no saved instance array, starting fresh");
+            cigarActualList = new ArrayList<>();
+        }else{
+            Log.d(TAG, "restoredata");
+            System.out.println("restoring saved instance array");
+            cigarActualList = (ArrayList<FeedItem>)savedInstanceState.getSerializable(KEY_INDEX);
+        }
     }
     private void signIn() {
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -114,6 +139,10 @@ public class MainActivity extends AppCompatActivity {
             mFirebaseAuth.removeAuthStateListener(mAuthListener);
         }
         // ...
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //No call for super(). Bug on API Level > 11.
     }
 }
 

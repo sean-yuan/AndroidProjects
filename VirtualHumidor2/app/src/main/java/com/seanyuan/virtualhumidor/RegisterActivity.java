@@ -22,18 +22,23 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.seanyuan.virtualhumidor.MainActivity.cigarActualList;
+
 public class RegisterActivity extends AppCompatActivity {
     private Button registerButton, cancelButton;
     private EditText nameEditText, emailEditText, passEditText, passConfEditText;
     private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
-    private DatabaseReference mDatabase;
+    private static FirebaseUser mFirebaseUser;
+    private static DatabaseReference mDatabase;
     private ProgressDialog progressDiag;
 
     @Override

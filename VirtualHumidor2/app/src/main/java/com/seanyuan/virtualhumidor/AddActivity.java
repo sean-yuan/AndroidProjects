@@ -79,8 +79,8 @@ public class AddActivity extends AppCompatActivity {
             value = bundle.getString("ItemPosition");
             int position = Integer.parseInt(value);
             FeedItem feedItem = MyRecyclerAdapter.feedItemList.get(position);
-            //mainImage.setImageBitmap(feedItem.getThumbnail());
             name.setText(feedItem.getTitle());
+            amount.setText(feedItem.getQuantity());
             ratingBar.setRating(Float.parseFloat(feedItem.getRatingValue()));
             type.setText(feedItem.getType());
             location.setText(feedItem.getLocation());
@@ -88,7 +88,7 @@ public class AddActivity extends AppCompatActivity {
             length.setText(feedItem.getPrice());
             gauge.setText(feedItem.getGauge());
             notes.setText(feedItem.getNotes());
-            imager.setImageBitmap(feedItem.getThumbnail());
+            //imager.setImageBitmap(feedItem.getThumbnail());
 
         }
 
@@ -141,11 +141,9 @@ public class AddActivity extends AppCompatActivity {
                 StorageReference imagesRef = storageRef.child(mFirebaseUser.getUid() + item.getTitle());
                 spot_image = imagesRef.child("mainImage.jpg");
                 upload(s_image , spot_image);
-                item.setThumbnail(s_image);
+                item.thumbnail = s_image ;
 
-                Map<String, Object> childUpdates = new HashMap<>();
-                childUpdates.put("users/" + mFirebaseUser.getUid() + "/humidor/", item.getTitle());
-                mDatabase.updateChildren(childUpdates);
+                mDatabase.child("users").child(mFirebaseUser.getUid()).child("humidor").setValue(item.getTitle());
                 mDatabase.child("cigars-all").child(mFirebaseUser.getUid() + item.getTitle()).setValue(item);
                 Intent intent = new Intent(AddActivity.this, ActionActivity.class);
                 startActivity(intent);
@@ -164,6 +162,7 @@ public class AddActivity extends AppCompatActivity {
                         final Uri imageUri = data.getData();
                         final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                         s_image = BitmapFactory.decodeStream(imageStream);
+                        imager.setImageBitmap(s_image);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -184,14 +183,14 @@ public class AddActivity extends AppCompatActivity {
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-                //pop-up
+                System.out.println("Upload failed" + exception);
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 //Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                System.out.println("upload success");
             }
         });
     }

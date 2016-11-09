@@ -2,17 +2,20 @@ package com.seanyuan.virtualhumidor;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
+
 /**
  * Created by seanyuan on 10/7/16.
  */
 
-public class FeedItem {
+public class FeedItem implements Serializable{
+    private static final long serialVersionUID = -7060210544600464481L;
     private String title;
     private String length;
     private String gauge;
     private String location;
     private String notes;
-    private Bitmap thumbnail;
+    public Bitmap thumbnail;
     private String type;
     private String ratingValue;
     private String price;
@@ -109,11 +112,11 @@ public class FeedItem {
         this.type = type;
     }
 
-    public Bitmap getThumbnail() {
+    /*public Bitmap getThumbnail() {
         return thumbnail;
     }
 
     public void setThumbnail(Bitmap thumbnail) {
         this.thumbnail = thumbnail;
-    }
+    }*/
 }

@@ -2,6 +2,7 @@ package com.seanyuan.virtualhumidor;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,25 +11,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,6 +32,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.seanyuan.virtualhumidor.MainActivity.cigarActualList;
 
 
 /**
@@ -48,7 +45,10 @@ public class ActionActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private static FirebaseUser mFirebaseUser;
     static List<String> cigarList;
-    static List<FeedItem> cigarActualList;
+    private static ProgressDialog progressDiag;
+    static MyRecyclerAdapter adapter;
+    static RecyclerView recyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,22 +57,26 @@ public class ActionActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        cigarList = new ArrayList<>();
-        cigarActualList = new ArrayList<>();
-        initDataListener();
         initActionBar();
     }
 
-    private void initDataListener(){
-        DatabaseReference database = mDatabase.child("users/"+mFirebaseUser.getUid()+"/humidor/");
+    public void initDataListener(){
+        //progressDiag = new ProgressDialog(this);
+        //progressDiag.setMessage("Loading Humidor...");
+        //progressDiag.show();
+        DatabaseReference database = mDatabase.child("cigars-all");
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                System.out.println("There are " + snapshot.getChildrenCount() + " cigars in humidor");
+                cigarActualList = new ArrayList<>();
+                System.out.println("There are " + snapshot.getChildrenCount() + " total cigars in humidor");
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    String houseID = postSnapshot.getValue(String.class);
-                    cigarList.add(houseID);
+                    FeedItem houseID = postSnapshot.getValue(FeedItem.class);
+                    if(houseID.getOwnerID().equals(mFirebaseUser.getUid())){
+                        cigarActualList.add(houseID);
+                    }
                 }
+                //progressDiag.hide();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -82,7 +86,7 @@ public class ActionActivity extends AppCompatActivity {
     }
 
     @SuppressWarnings("deprecation")
-    private void initActionBar() {
+    public void initActionBar() {
         if (getSupportActionBar() != null) {
             ActionBar actionBar = getSupportActionBar();
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -124,6 +128,7 @@ public class ActionActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        initDataListener();
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -165,18 +170,22 @@ public class ActionActivity extends AppCompatActivity {
 
             return root;
         }
+        @Override
+        public void onSaveInstanceState(Bundle outState) {
+            //No call for super(). Bug on API Level > 11.
+        }
     }
 
     public static class RecyclerViewFragment extends Fragment {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            System.out.println("started fragment with " + cigarActualList.size());
             View root = inflater.inflate(R.layout.fragment_recyclerview, container, false);
-            RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.myList);
+            recyclerView = (RecyclerView) root.findViewById(R.id.myList);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(layoutManager);
-            getItemsHumidor();
-            MyRecyclerAdapter adapter = new MyRecyclerAdapter(getActivity(), cigarActualList);
+            adapter = new MyRecyclerAdapter(getActivity(), cigarActualList);
             recyclerView.setAdapter(adapter);
             FloatingActionButton fab = (FloatingActionButton) root.findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener() {
@@ -189,24 +198,51 @@ public class ActionActivity extends AppCompatActivity {
 
             return root;
         }
-    }
+        @Override
+        public void onSaveInstanceState(Bundle outState) {
+        }
 
-    private static void getItemsHumidor(){
-        mDatabase.child("cigars-all");
-        mDatabase.orderByChild("ownerID").equalTo(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+    }
+    public static void getItemsHumidor(){
+        DatabaseReference database = mDatabase.child("cigars-all");
+        database.orderByChild("ownerID").equalTo(mFirebaseUser.getUid()).addChildEventListener(new ChildEventListener() {
+
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    Log.d("User key", child.getKey());
-                    Log.d("User ref", child.getRef().toString());
-                    Log.d("User val", child.getValue().toString());
-                    cigarActualList.add((FeedItem)child.getValue());
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                System.out.println("found one/initialized");
+                FeedItem newPost = dataSnapshot.getValue(FeedItem.class);
+                System.out.println("found" + newPost.getTitle());
+                for(int i = 0; i < cigarActualList.size(); i++){
+                    if(cigarActualList.get(i).getCigarID().equals(newPost.getCigarID())){
+                        //dont add
+                    }
+                    else{
+                        cigarActualList.add(newPost);
+                    }
                 }
             }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
+            // ...
         });
     }
 }

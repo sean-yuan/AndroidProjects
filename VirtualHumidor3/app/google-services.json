@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "308181377427",
+    "firebase_url": "https://virtualhumidor3.firebaseio.com",
+    "project_id": "virtualhumidor3",
+    "storage_bucket": "virtualhumidor3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308181377427:android:ee106eb1278e3dcc",
+        "android_client_info": {
+          "package_name": "com.seanyuan.virtualhumidor3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308181377427-u7jlsvs6aqd7334uj85k0n40f0vdehhq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.seanyuan.virtualhumidor3",
+            "certificate_hash": "302C3E29B9EF5D8678116C2EBDE93601F5E04DC7"
+          }
+        },
+        {
+          "client_id": "308181377427-apg43pbkt8il72njs2kfbp7agl4ksk9u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyJdDeys5umfQCmeubX87KbqSU1QVLbP8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "308181377427-apg43pbkt8il72njs2kfbp7agl4ksk9u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
